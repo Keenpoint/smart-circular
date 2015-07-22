@@ -153,13 +153,11 @@ JSON.breakCyclesInBFS = function (object, toChange, toBeChangedFor) {
     return result;
 };
 
-module.exports = function (json, file) {
+module.exports = function (json, file, toChange, toBeChangedFor) {
 
     //Define here the personalized replacements
-    //var toChange = [require('mongodb').Collection];
-    //var toBeChangedFor = ['collection'];
-    var toChange = [];
-    var toBeChangedFor = [];
+    toChange = toChange || [];
+    toBeChangedFor = toBeChangedFor || [];
 
     //We replace the JSON passed by the brand new JSON returned from JSON.breakCyclesInBFS
     //This way, the original JSON in unchanged, and it can be used for other operations
