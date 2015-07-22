@@ -155,6 +155,8 @@ JSON.breakCyclesInBFS = function (object, toChange, toBeChangedFor) {
 
 module.exports = function (json, file, toChange, toBeChangedFor) {
 
+    assert(toChange.length === toBeChangedFor.length);
+
     //Define here the personalized replacements
     toChange = toChange || [];
     toBeChangedFor = toBeChangedFor || [];
