@@ -30,8 +30,11 @@ var result = jr(original_JSON, file_path, [array_of_elements_to_replace], [array
 ```
 
 
+If you want to replace every object 'x' of the JSON by a certain object 'y', and every object 'a' by 'b', pass array_of_elements_to_replace as [x, a] and array_of_replacements as [y, b]. 
 
-If you want to replace every object 'x' of the JSON by a certain object 'y', and every object 'a' by 'b', pass array_of_elements_to_replace as [x, a] and array_of_replacements as [y, b]. These are optional arguments, and they must have same length. Default: no replacements, except for repetitive objects or circular references. 
+These are optional arguments, and they must have the same length. 
+
+Default: no replacements, except for repetitive objects or circular references, when the object will be changed by a reference like "$ref: [root]['friends'][0]['name']".
 
 
 
