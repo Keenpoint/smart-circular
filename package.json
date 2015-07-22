@@ -1,4 +1,17 @@
 {
   "name": "json-references",
-  "version": "1.0.0"
+  "version": "1.0.0",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "author": "Danilo Augusto <daniloaugusto.ita16@gmail.com>",
+  "license": "MIT",
+  "description": "Library to simplify JSON, replacing circular and repeated structures by the path leading to the first time this structure happens (in breadth-first search).",
+  "keywords": [
+    "JSON",
+    "circular",
+    "reference",
+    "references",
+    "BFS"
+  ]
 }
