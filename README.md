@@ -12,15 +12,22 @@ $ npm i json-references
 
 Require the module
 
+```javascript
 var jr = require('json-references');
+```
 
 Write the result of original_JSON simplification in the file indicated as second argument
 
+```javascript
 jr(original_JSON, file_path, [array_of_elements_to_replace], [array_of_replacements]);
+```
+
 
 If you want the result stringified in a variable:
 
+```javascript
 var result = jr(original_JSON, file_path, [array_of_elements_to_replace], [array_of_replacements]);
+```
 
 
 
