@@ -1,6 +1,6 @@
 # json-references
 
-Library to simplify JSON, replacing circular and repeated structures by the path leading to the first time this structure happens (in breadth-first search). Used to debug JSON objects and fix circular references, mainly.
+Library to simplify JSON, replacing **circular** and **repeated** structures by the *path* leading to the first time this structure happens (in *breadth-first search*, to use the shortest paths).
 
 
 # Installation
@@ -10,36 +10,57 @@ $ npm i json-references
 
 # Usage 
 
-Require the module
+- Require the module
 
 ```javascript
 var jr = require('json-references');
 ```
 
-Pass the JSON to be simplified as the first argument of the jr function.
-Optionally, pass a second argument with your personalized function to transform parts of the JSON (cf. examples).
+- Pass the JSON to be simplified as the first argument of the jr function.
+- Optionally, pass a second argument with your personalized function to transform parts of the JSON (cf. examples).
 
 ```javascript
-jr(value, [customizer]);
+var result = jr(value, [customizer]);
 ```
 
 
 # Examples
 
-Classic way. 
+- Classic way. Using the *breadth-first search*, the replacements of circular and repeated references will be the shortest paths you can get.
 
 ```javascript
  var result = jr(json);
 ```
 
-The following script will now only replace circular and repeated references, but also replace by false all boolean values that are true.
+The following script will not only replace circular and repeated references, but also replace by *false* all boolean values that are *true*.
 
 ```javascript
  var result = jr(json, function (value) {
             if (value === true) {
-                return false;
+                return false; //return replacement
             }
         });
+```
+
+If you want to replace an entire JSON object, use the method [isEqual from lodash](https://lodash.com/docs#cloneDeep):
+
+```javascript
+ var result = jr(json, function (value) {
+             if (_.isEqual(value, other)) { //other is the deep JSON object you want to replace
+                //returning replacement
+                return [
+                    {
+                        "id": 0,
+                        "name": "Danilo Augusto"
+                    },
+                    {
+                        "id": 1,
+                        "name": "Sherlock Holmes"
+                    }
+                ];
+            }
+        });
+        
 ```
 
 
