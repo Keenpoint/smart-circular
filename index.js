@@ -1,8 +1,7 @@
-var fs = require('fs');
-
 /* Used to store the path until the JSON element concerned. This way the JSON source will be modifiable when we
  take an element from the queue. "result" is the JSON being constructed, the JSON to be returned with circular references
  transformed */
+
 function ModifierJSON(result, path) {
 
     //Used to construct new paths from the current element (if it's a composed JSON or array)
@@ -64,8 +63,25 @@ var testElementary  = function (value) {
     (typeof value === 'number'));
 };
 
+//To construct path leading to sub-JSON in a friendly-user way
+var makePath = function (path) {
+    var steps = path
+        .slice(1, path.length - 1)
+        .split('][');
+
+    var str = '';
+
+    for (var i in steps) {
+        if(steps.hasOwnProperty(i)) {
+            str += '.'+steps[i];
+        }
+    }
+
+    return str;
+};
+
 //Main function to travel through the JSON and transform the circular references and personalized replacements
-JSON.breakCyclesInBFS = function (object, toChange, toBeChangedFor) {
+JSON.breakCyclesInBFS = function (object, customizer) {
 
     var foundStack = [], //Stack to keep track of discovered objects
         foundPathStack = [], //Stack of paths of discovered values
@@ -88,6 +104,8 @@ JSON.breakCyclesInBFS = function (object, toChange, toBeChangedFor) {
     queueOfModifiers.push(new ModifierJSON (object, ''));
     paths.push('');
 
+    var positionStack;
+
     //BFS algorithm
     while (queue.length > 0) {
 
@@ -97,10 +115,22 @@ JSON.breakCyclesInBFS = function (object, toChange, toBeChangedFor) {
         //The path that leads to this JSON, so we can build other paths from it
         var path = modifier.getter();
 
-        //We first verify if this JSON is to be replaced by a personalized replacement
-        var positionToChange = toChange.indexOf(value);
-        if (positionToChange !== -1) {
-            modifier.modify(toBeChangedFor[positionToChange]);
+        //We first make any personalized replacements
+        //If customizer doesn't affect the value, customizer(value) returns undefined and we jump this if
+        if (customizer !== undefined && customizer(value) !== undefined) {
+
+            var new_value = customizer(value);
+
+            //If the value has already been discovered, we fix its circular reference
+            positionStack = foundStack.indexOf(new_value);
+            if (positionStack !== -1) {
+                modifier.modify('REFERENCE = JSON' + makePath(foundPathStack[positionStack]));
+            }
+            else {
+                modifier.modify(new_value);
+            }
+
+            //The personalized replacements overwrite any other changes
             continue;
         }
 
@@ -111,9 +141,9 @@ JSON.breakCyclesInBFS = function (object, toChange, toBeChangedFor) {
         else if (typeof value === 'object') {
 
             //If the value has already been discovered, we fix its circular reference and go to the next iteration
-            var positionStack = foundStack.indexOf(value);
+            positionStack = foundStack.indexOf(value);
             if (positionStack !== -1) {
-                modifier.modify('$ref: [root]' + foundPathStack[positionStack]);
+                modifier.modify('REFERENCE = JSON' + makePath(foundPathStack[positionStack]));
                 continue;
             }
 
@@ -153,25 +183,8 @@ JSON.breakCyclesInBFS = function (object, toChange, toBeChangedFor) {
     return result;
 };
 
-module.exports = function (json, file, toChange, toBeChangedFor) {
-
-    //toChange and toBeChangedFor must have the same length
-    console.assert(toChange === undefined || toBeChangedFor === undefined || toChange.length === toBeChangedFor.length);
-
-    //Define here the personalized replacements
-    toChange = toChange || [];
-    toBeChangedFor = toBeChangedFor || [];
-
+module.exports = function (json, customizer) {
     //We replace the JSON passed by the brand new JSON returned from JSON.breakCyclesInBFS
     //This way, the original JSON in unchanged, and it can be used for other operations
-    json = JSON.breakCyclesInBFS(json, toChange, toBeChangedFor);
-
-    //We write the JSON in the file whose path is passed as argument
-    var s = JSON.stringify(json, null, 2);
-    if (file) {
-        fs.writeFileSync(file, s);
-    }
-
-    //We also make the result JSON available for other uses
-    return s;
+    return JSON.breakCyclesInBFS(json, customizer);
 };
