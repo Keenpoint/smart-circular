@@ -1,6 +1,6 @@
 {
   "name": "json-references",
-  "version": "2.0.1",
+  "version": "1.0.3",
   "scripts": {
     "start": "node index.js"
   },
