@@ -13,5 +13,25 @@
     "reference",
     "references",
     "BFS"
-  ]
+  ],
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "dependencies": {
+    "chai": "^3.2.0",
+    "lodash": "^3.10.0",
+    "json-references": "^1.0.2"
+  },
+  "devDependencies": {
+    "mocha": "^2.2.5"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/Keenpoint/json-references.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Keenpoint/json-references/issues"
+  },
+  "homepage": "https://github.com/Keenpoint/json-references#readme"
 }
