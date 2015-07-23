@@ -1,6 +1,6 @@
 # json-references
 
-Library to simplify JSON, replacing circular and repeated structures by the path leading to the first time this structure happens (in breadth-first search). Used to debug JSON objects.
+Library to simplify JSON, replacing circular and repeated structures by the path leading to the first time this structure happens (in breadth-first search). Used to debug JSON objects and fix circular references, mainly.
 
 
 # Installation
@@ -16,25 +16,44 @@ Require the module
 var jr = require('json-references');
 ```
 
-Write the result of original_JSON simplification in the file indicated as second argument
+Pass the JSON to be simplified as the first argument of the jr function.
+Optionally, pass a second argument with your personalized function to transform parts of the JSON (cf. examples).
 
 ```javascript
-jr(original_JSON, file_path, [array_of_elements_to_replace], [array_of_replacements]);
+jr(value, [customizer]);
 ```
 
 
-If you want the result stringified in a variable:
+# Examples
+
+Classic way. 
 
 ```javascript
-var result = jr(original_JSON, file_path, [array_of_elements_to_replace], [array_of_replacements]);
+ var result = jr(json);
+```
+
+The following script will now only replace circular and repeated references, but also replace by false all boolean values that are true.
+
+```javascript
+ var result = jr(json, function (value) {
+            if (value === true) {
+                return false;
+            }
+        });
 ```
 
 
-If you want to replace every object 'x' of the JSON by a certain object 'y', and every object 'a' by 'b', pass array_of_elements_to_replace as [x, a] and array_of_replacements as [y, b]. 
+# Understanding the paths
 
-These are optional arguments, and they must have the same length. 
+The replacements made by the algorithm (not personalized) are strings like 'REFERENCE = JSON.[path]'.
 
-Default: no replacements, except for repetitive objects or circular references, when the object will be changed by a reference like "$ref: [root]['friends'][0]['name']".
+The paths written in the result are easy to read: in the following example, 'JSON' is your original variable 'value', which is an array. 
+
+So this path points to 'your variable' → 'second position of the array' (arrays begin at 0) → 'key friends' → 'third friend' → 'his name'.
+
+```javascript
+  REFERENCE = JSON.1.\"friends\".2.\"name\"
+```
 
 
 
