@@ -1,6 +1,6 @@
 # json-references
 
-Library to simplify JSON, replacing **circular** and **repeated** structures by the *path* leading to the first time this structure happens. Uses *breadth-first search* to replace by the shortest paths.
+Library to simplify JSON, replacing **circular** and **repeated** structures by the *path* leading to the first time this structure happens. Uses *breadth-first search* to do replacements with the shortest paths.
 
 
 # Installation
@@ -54,14 +54,18 @@ This script gives:
 - Avoiding repetitions.
 
 ```javascript
- var json = {
-       a: {
-             b: 3
-       },
-       c: 2
- };
+var json = {
+            a: {
+                     b: {
+                            c: 55
+                     }
+            },
+            d: {
+                     e: 4
+            }
+};
 
- json.c = json.a;
+json.d = json.a.b;
 
  var result = jr(json);
 ```
@@ -70,14 +74,16 @@ This script gives:
 
 ```javascript
 {
-       "a": {
-              "b": "REFERENCE = JSON.\"c\""
-       },
-       "c": {
-              "d": 4
-       }
+         "a": {
+              "b": "REFERENCE = JSON.\"d\""
+         },
+         "d": {
+              "c": 55
+         }
 }
 ```
+
+Realize the reference is put at *b*, even though *d* has changed. If we had conserved *b* to put the path at *d*, this path would be longer. This is annoying when dealing with really big JSON's.
 
 - The following script will not only replace circular and repeated references, but also replace by *false* all boolean values that are *true*.
 
@@ -115,11 +121,11 @@ This script gives:
 
 # Understanding the paths
 
-The replacements made by the algorithm (not personalized) are strings like 'REFERENCE = JSON.[path]'.
+The replacements made by the algorithm (not personalized) are strings in the form 'REFERENCE = JSON.[path]'.
 
-The paths written in the result are easy to read: 'JSON' is your original variable 'value', which is an array. 
+The paths written in the result are easy to read: 'JSON' is your original variable 'value'. 
 
-So this path below points to 'your variable' → 'second position of the array' (arrays begin at 0) → 'key friends' → 'third friend' → 'his name'.
+So the path below points to 'your variable' (which is an array) → 'second position of the array' (arrays begin at 0) → 'key friends' → 'third friend' → 'his name'.
 
 ```javascript
   REFERENCE = JSON.1.\"friends\".2.\"name\"
