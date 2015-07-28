@@ -8,6 +8,9 @@
     {"name": "Jamal Belghiti", "email": "jbelghiti@keenpoint.com"},
     {"name": "Tiago Pianezzola Cichelero", "email": "tpianezzola@keenpoint.com"}
   ],
+  "scripts": {
+    "test": "mocha test/test.js"
+  },
   "license": "MIT",
   "description": "Library to simplify JSON, replacing circular and repeated structures by the path leading to the first time this structure happens (in breadth-first search).",
   "keywords": [
@@ -18,7 +21,7 @@
     "BFS"
   ],
   "directories": {
-    "test": "test"
+    "test": "node"
   },
   "repository": {
     "type": "git",
@@ -30,7 +33,7 @@
   "homepage": "https://github.com/Keenpoint/json-references#readme",
   "dependencies": {
     "chai": "^3.2.0",
-    "json-references": "^1.0.2",
+    "json-references": "^2.0.4",
     "lodash": "^3.10.0"
   },
   "devDependencies": {
