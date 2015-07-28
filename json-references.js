@@ -78,7 +78,7 @@ var makePath = function (path) {
             }
             else {
                 //Separation between consecutive strings
-                str += (index>0 && isNaN(steps[index-1]) ? '.' : '') + steps[index];
+                str += '.' + JSON.parse(steps[index]);
             }
         }
     }

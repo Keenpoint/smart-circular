@@ -149,8 +149,8 @@ describe('Verify correct order of references from BFS algorithm.', function () {
             if(original.hasOwnProperty(index)) {
                 original[index]['friend'] = original[index]['friends'][2];
                 correctAnswer[index]['friend'] = correctAnswer[index]['friends'][2];
-                correctAnswer[index]['friends'][2] = "$["+index+"]\"friend\"";
-                wrongAnswer[index]['friend'] = "$["+index+"]\"friends\"[2]"; //space extra
+                correctAnswer[index]['friends'][2] = "$["+index+"].friend";
+                wrongAnswer[index]['friend'] = "$["+index+"].friends[2]"; //space extra
             }
         }
 
