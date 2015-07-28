@@ -38,7 +38,9 @@ var json = {
 
 json.a.b = json.a;
 
-var result = jr(json);      
+var result = jr(json);
+
+console.log(JSON.stringify(result, null, 2));
 ```
 
 This script gives:
@@ -46,7 +48,7 @@ This script gives:
 ```javascript
 {
       "a": {
-          "b": "REFERENCE = JSON.\"a\""
+          "b": "$,a"
        }
 }  
 ```
@@ -69,6 +71,8 @@ var json = {
 json.d = json.a.b;
 
 var result = jr(json);
+
+console.log(JSON.stringify(result, null, 2));
 ```
 
 This script gives:
@@ -76,7 +80,7 @@ This script gives:
 ```javascript
 {
          "a": {
-              "b": "REFERENCE = JSON.\"d\""
+              "b": "$.d"
          },
          "d": {
               "c": 55
@@ -122,14 +126,14 @@ Realize the reference is put at *b*, even though *d* has changed. If we had cons
 
 # Understanding the paths
 
-The replacements made by the algorithm (not personalized) are strings in the form 'REFERENCE = JSON.[path]'.
+The replacements made by the algorithm (not personalized) are strings in the form '$[path]'.
 
 The paths written in the result are easy to read: 'JSON' is your original variable 'value'. 
 
 So the path below points to 'your variable' (which is an array) → 'second position of the array' (arrays begin at 0) → 'key friends' → 'third friend' → 'his name'.
 
 ```javascript
-  REFERENCE = JSON.1.\"friends\".2.\"name\"
+  $[1].friends[2].name
 ```
 
 
