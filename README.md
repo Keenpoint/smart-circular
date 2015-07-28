@@ -48,7 +48,7 @@ This script gives:
 ```javascript
 {
       "a": {
-          "b": "$,a"
+          "b": "$.a"
        }
 }  
 ```
