@@ -16,9 +16,9 @@ describe('Transform JSON non-circular references.', function () {
         original[0]['friend'] = original[1];
         original[1]['friend'] = original[2];
         original[2]['friend'] = original[3];
-        correctAnswer[0]['friend'] = "REFERENCE = JSON.1";
-        correctAnswer[1]['friend'] = "REFERENCE = JSON.2";
-        correctAnswer[2]['friend'] = "REFERENCE = JSON.3";
+        correctAnswer[0]['friend'] = "$[1]";
+        correctAnswer[1]['friend'] = "$[2]";
+        correctAnswer[2]['friend'] = "$[3]";
 
         var result = circularBFS(original);
 
@@ -37,9 +37,9 @@ describe('Transform JSON non-circular references.', function () {
         original[0]['friends'][0] = original[2];
         original[1]['friends'][0] = original[4];
         original[0]['friends'][1] = original[3];
-        correctAnswer[0]['friends'][0] = "REFERENCE = JSON.2";
-        correctAnswer[1]['friends'][0] = "REFERENCE = JSON.4";
-        correctAnswer[0]['friends'][1] = "REFERENCE = JSON.3";
+        correctAnswer[0]['friends'][0] = "$[2]";
+        correctAnswer[1]['friends'][0] = "$[4]";
+        correctAnswer[0]['friends'][1] = "$[3]";
 
         //Run algorithm and get the result
         var result = circularBFS(original);
@@ -59,12 +59,15 @@ describe('Transform JSON circular references.', function () {
         var correctAnswer = _.cloneDeep(original);
         var wrongAnswer = _.cloneDeep(original);
 
+        var next;
+
         //Insert circularity in our JSON
         for (var index in original) {
             if(original.hasOwnProperty(index)) {
                 original[index]['myself'] = original[index];
-                correctAnswer[index]['myself'] = "REFERENCE = JSON." + index;
-                wrongAnswer[index]['myself'] = "REFERENCE = [root ][" + index + "]"; //space extra
+                correctAnswer[index]['myself'] = "$[" + index +"]";
+                next = index+1;
+                wrongAnswer[index]['myself'] = "$ [" + next + "]";
             }
         }
 
@@ -90,7 +93,7 @@ describe('Transform JSON circular references.', function () {
             if(original.hasOwnProperty(index)) {
                 next = (index+1)%10;
                 original[index]['next'] = original[next];
-                correctAnswer[index]['next'] = "REFERENCE = JSON." + next;
+                correctAnswer[index]['next'] = "$[" + next + "]";
                 wrongAnswer[index]['next'] = "REFERENCE = JSON." + index; //space extra
             }
         }
@@ -117,8 +120,8 @@ describe('Transform JSON circular references.', function () {
             if(original.hasOwnProperty(index)) {
                 previous = (index-1+10)%10;
                 original[index]['previous'] = original[previous];
-                correctAnswer[index]['previous'] = "REFERENCE = JSON." + previous;
-                wrongAnswer[index]['previous'] = "REFERENCE = JSON." + index; //space extra
+                correctAnswer[index]['previous'] = "$[" + previous + "]";
+                wrongAnswer[index]['previous'] = "$[" + index +"]"; //space extra
             }
         }
 
@@ -146,8 +149,8 @@ describe('Verify correct order of references from BFS algorithm.', function () {
             if(original.hasOwnProperty(index)) {
                 original[index]['friend'] = original[index]['friends'][2];
                 correctAnswer[index]['friend'] = correctAnswer[index]['friends'][2];
-                correctAnswer[index]['friends'][2] = "REFERENCE = JSON."+index+".\"friend\"";
-                wrongAnswer[index]['friend'] = "REFERENCE = JSON."+index+".\"friends\".2"; //space extra
+                correctAnswer[index]['friends'][2] = "$["+index+"]\"friend\"";
+                wrongAnswer[index]['friend'] = "$["+index+"]\"friends\"[2]"; //space extra
             }
         }
 

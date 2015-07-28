@@ -71,9 +71,15 @@ var makePath = function (path) {
 
     var str = '';
 
-    for (var i in steps) {
-        if(steps.hasOwnProperty(i)) {
-            str += '.'+steps[i];
+    for (var index in steps) {
+        if(steps.hasOwnProperty(index)) {
+            if (!isNaN(steps[index])) {
+                str += '[' + steps[index] + ']';
+            }
+            else {
+                //Separation between consecutive strings
+                str += (index>0 && isNaN(steps[index-1]) ? '.' : '') + steps[index];
+            }
         }
     }
 
@@ -124,7 +130,7 @@ JSON.breakCyclesInBFS = function (object, customizer) {
             //If the value has already been discovered, we fix its circular reference
             positionStack = foundStack.indexOf(new_value);
             if (positionStack !== -1) {
-                modifier.modify('REFERENCE = JSON' + makePath(foundPathStack[positionStack]));
+                modifier.modify('$' + makePath(foundPathStack[positionStack]));
             }
             else {
                 modifier.modify(new_value);
@@ -143,7 +149,7 @@ JSON.breakCyclesInBFS = function (object, customizer) {
             //If the value has already been discovered, we fix its circular reference and go to the next iteration
             positionStack = foundStack.indexOf(value);
             if (positionStack !== -1) {
-                modifier.modify('REFERENCE = JSON' + makePath(foundPathStack[positionStack]));
+                modifier.modify('$' + makePath(foundPathStack[positionStack]));
                 continue;
             }
 
