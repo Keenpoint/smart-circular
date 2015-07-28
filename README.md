@@ -5,8 +5,9 @@ Library to simplify JSON, replacing **circular** and **repeated** structures by 
 
 # Installation
 
-$ npm i json-references
-
+```
+npm i json-references
+```
 
 # Usage 
 
@@ -67,7 +68,7 @@ var json = {
 
 json.d = json.a.b;
 
- var result = jr(json);
+var result = jr(json);
 ```
 
 This script gives:
