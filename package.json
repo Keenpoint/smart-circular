@@ -4,12 +4,12 @@
   "main": "json-references.js",
   "author": "Danilo Augusto <daniloaugusto.ita16@gmail.com>",
   "contributors": [
-    {"name": "Benoît Richert", "email": "benoit@natura-rerum.com"},
+    {"name": "Benoit Richert", "email": "github@natura-rerum.com"},
     {"name": "Jamal Belghiti", "email": "jbelghiti@keenpoint.com"},
     {"name": "Tiago Pianezzola Cichelero", "email": "tpianezzola@keenpoint.com"}
   ],
   "scripts": {
-    "test": "mocha test/test.js"
+    "test": "mocha"
   },
   "license": "MIT",
   "description": "Library to simplify JSON, replacing circular and repeated structures by the path leading to the first time this structure happens (in breadth-first search).",
@@ -30,13 +30,9 @@
   "bugs": {
     "url": "https://github.com/Keenpoint/json-references/issues"
   },
-  "homepage": "https://github.com/Keenpoint/json-references#readme",
-  "dependencies": {
-    "chai": "^3.2.0",
-    "json-references": "^2.0.4",
-    "lodash": "^3.10.0"
-  },
   "devDependencies": {
+    "chai": "^3.2.0",
+    "lodash": "^3.10.0",
     "mocha": "^2.2.5"
   }
 }
