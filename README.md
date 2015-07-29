@@ -1,6 +1,45 @@
-# json-references
+# smart-circular
 
-Library to simplify JSON, replacing **circular** and **repeated** structures by the *path* leading to the first time this structure happens. Uses *breadth-first search* to do replacements with the shortest paths.
+Simplify JS objects, replacing **circular** references by the *path* leading to the parent reference. Useful before a JSON.stringify() or a recursive navigation over the object.
+
+# Problem
+
+See this structure?
+
+```javascript
+var danilo = {name: "Danilo"};
+
+var school = {
+       parents: [
+              {name: "Jairo", children: [danilo]}
+       ],
+       children: [danilo]
+};
+```
+
+What if you wanted to remove circular references to the school object, to export it in JSON for example? Actual libraries that remove circular references remove them recursively, so you have have a strong chance to obtain the json :
+
+```javascript
+{
+       parents: [
+              {name: "Jairo", children: [{name: "Danilo"}]}
+       ],
+       children: ["circular"]
+}
+```
+
+The library smart-circular not only keeps the nearest reference to the root, but the other are transformed to a string pointing to it :
+
+```javascript
+{
+       parents: [
+              {name: "Jairo", children: ["$.children[0]"]}
+       ],
+       children: [{name: "Danilo"}]
+}
+```
+
+This is obtained using *breadth-first search* to do replacements with the shortest paths.
 
 
 # Installation
