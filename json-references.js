@@ -1,11 +1,11 @@
 /* Used to store the path until the JSON element concerned. This way the JSON source will be modifiable when we
  take an element from the queue. "result" is the JSON being constructed, the JSON to be returned with circular references
  transformed */
-
-function ModifierJSON(result, path) {
+//todo: var = ...
+function ModifierJSON(result, path) {//todo: why makePath not in here?
 
     //Used to construct new paths from the current element (if it's a composed JSON or array)
-    this.getter = function () {
+    this.getter = function () {//todo: why not on prototype?
         return path;
     };
 
@@ -64,7 +64,7 @@ var testElementary  = function (value) {
 };
 
 //To construct path leading to sub-JSON in a friendly-user way
-var makePath = function (path) {
+var makePath = function (path) {//todo: makePath take a path --> refactor
     var steps = path
         .slice(1, path.length - 1)
         .split('][');
@@ -73,7 +73,7 @@ var makePath = function (path) {
 
     for (var index in steps) {
         if(steps.hasOwnProperty(index)) {
-            if (!isNaN(steps[index])) {
+            if (!isNaN(steps[index])) {//todo: opérateur ternaire
                 str += '[' + steps[index] + ']';
             }
             else {
@@ -87,7 +87,7 @@ var makePath = function (path) {
 };
 
 //Main function to travel through the JSON and transform the circular references and personalized replacements
-JSON.breakCyclesInBFS = function (object, customizer) {
+JSON.breakCyclesInBFS = function (object, customizer) {//todo: put it out of JSON?
 
     var foundStack = [], //Stack to keep track of discovered objects
         foundPathStack = [], //Stack of paths of discovered values
@@ -96,7 +96,7 @@ JSON.breakCyclesInBFS = function (object, customizer) {
         paths = []; //necessary to write the circular references by paths
 
     //We instantiate our result root.
-    var result;
+    var result;//todo: opérateur ternaire
     if (object instanceof Array)
         result = [];
     else
@@ -123,13 +123,13 @@ JSON.breakCyclesInBFS = function (object, customizer) {
 
         //We first make any personalized replacements
         //If customizer doesn't affect the value, customizer(value) returns undefined and we jump this if
-        if (customizer !== undefined && customizer(value) !== undefined) {
+        if (customizer !== undefined && customizer(value) !== undefined) {//todo: call customizer only once
 
-            var new_value = customizer(value);
+            var new_value = customizer(value);//todo: why snake case?
 
             //If the value has already been discovered, we fix its circular reference
             positionStack = foundStack.indexOf(new_value);
-            if (positionStack !== -1) {
+            if (positionStack !== -1) {//todo: if(...) new_value = ...; modifier.modify(new_value);
                 modifier.modify('$' + makePath(foundPathStack[positionStack]));
             }
             else {
@@ -137,19 +137,19 @@ JSON.breakCyclesInBFS = function (object, customizer) {
             }
 
             //The personalized replacements overwrite any other changes
-            continue;
+            continue;//todo: why customizer is separated?
         }
 
         //If it's an elementary value, it can't be circular, so we just put this value in our JSON result.
-        if (testElementary(value)) {
-            modifier.modify(value);
+        if (testElementary(value)) {//todo: utility?
+            modifier.modify(value);//todo: this is not a modifier any more, this is an object editor
         }
         else if (typeof value === 'object') {
 
             //If the value has already been discovered, we fix its circular reference and go to the next iteration
             positionStack = foundStack.indexOf(value);
             if (positionStack !== -1) {
-                modifier.modify('$' + makePath(foundPathStack[positionStack]));
+                modifier.modify('$' + makePath(foundPathStack[positionStack]));//todo: add "$" in makePath
                 continue;
             }
 
@@ -158,32 +158,32 @@ JSON.breakCyclesInBFS = function (object, customizer) {
             foundPathStack.push(path);
 
             //If the current value is an array, we put '[]' in the result JSON, and all the children in the queues
-            if (Object.prototype.toString.apply(value) === '[object Array]') {
-                modifier.modify('[object Array]');
+            if (Object.prototype.toString.apply(value) === '[object Array]') {//todo: so simple in lodash...
+                modifier.modify('[object Array]');//todo: ?
                 for (var i = 0; i < value.length; i++) {
                     queue.push(value[i]);
-                    queueOfModifiers.push(new ModifierJSON(result, path + '[' + i + ']'));
+                    queueOfModifiers.push(new ModifierJSON(result, path + '[' + i + ']'));//todo: var newPath = path + '[' + i + ']'
                     paths.push(path + '[' + i + ']');
                 }
             }
             //If value is a nested JSON, we put '{}' in the result JSON, and all children in the queues
             else {
-                modifier.modify('[nested JSON]');
+                modifier.modify('[nested JSON]');//todo: what's that?
                 for (var name in value) {
                     if (Object.prototype.hasOwnProperty.call(value, name)) {
                         queue.push(value[name]);
-                        queueOfModifiers.push(new ModifierJSON(result, path + '[' + JSON.stringify(name) + ']'));
+                        queueOfModifiers.push(new ModifierJSON(result, path + '[' + JSON.stringify(name) + ']'));//todo: why JSON.stringify? + todo newPath
                         paths.push(path + '[' + JSON.stringify(name) + ']');
                     }
                 }
             }
         }
         //If it's a function, we only write 'f(arg1, arg2, ...) { number of lines }'
-        else if (typeof value === 'function') {
+        else if (typeof value === 'function') {//todo: why not remove it and let the user put it in customizer?
             var fs = value.toString();
             var lineNum = fs.split(/\r\n|\r|\n/).length;
             modifier.modify("f " + functionRegex.exec(value.toString())[0] + "{ " + lineNum + " }");
-        }
+        }//todo: else?
     }
 
     return result;
