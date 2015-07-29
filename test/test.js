@@ -164,3 +164,32 @@ describe('Verify correct order of references from BFS algorithm.', function () {
     });
 
 });
+
+describe('Readme example', function () {
+
+    it('works', function (done) {
+        var danilo = {name: "Danilo"};
+
+        var school = {
+            parents: [
+                {name: "Jairo", children: [danilo]}
+            ],
+            children: [danilo]
+        };
+
+        var answer = {
+            parents: [
+                {name: "Jairo", children: ["$.children[0]"]}
+            ],
+            children: [{name: "Danilo"}]
+        };
+
+        var result = circularBFS(school);
+
+        //Verification
+        expect(result).to.deep.equal(answer);
+
+        done();
+    });
+
+});
