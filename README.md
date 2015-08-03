@@ -1,4 +1,4 @@
-# smart-circular (new name for json-references)
+# smart-circular
 
 Simplify JS objects, replacing **circular** references by the *path* leading to the parent reference. Useful before a JSON.stringify() or a recursive navigation over the object.
 

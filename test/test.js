@@ -1,6 +1,4 @@
-'use strict';
-
-var circularBFS = require('../json-references');
+var circularBFS = require('../smart-circular');
 var chai = require ('chai');
 var _ = require('lodash');
 var expect = chai.expect;

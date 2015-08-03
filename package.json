@@ -1,18 +1,19 @@
 {
-  "name": "json-references",
-  "version": "2.0.5",
-  "main": "json-references.js",
+  "name": "smart-circular",
+  "version": "1.0.0",
+  "main": "smart-circular.js",
   "author": "Danilo Augusto <daniloaugusto.ita16@gmail.com>",
   "contributors": [
-    {"name": "Benoit Richert", "email": "github@natura-rerum.com"},
-    {"name": "Jamal Belghiti", "email": "jbelghiti@keenpoint.com"},
-    {"name": "Tiago Pianezzola Cichelero", "email": "tpianezzola@keenpoint.com"}
+    {
+      "name": "Benoit Richert",
+      "email": "github@natura-rerum.com"
+    }
   ],
   "scripts": {
     "test": "mocha"
   },
   "license": "MIT",
-  "description": "Library to simplify JSON, replacing circular and repeated structures by the path leading to the first time this structure happens (in breadth-first search).",
+  "description": "Simplify JS objects, replacing circular references by the path leading to the parent reference. Useful before a JSON.stringify() or a recursive navigation over the object.",
   "keywords": [
     "JSON",
     "circular",
@@ -21,14 +22,14 @@
     "BFS"
   ],
   "directories": {
-    "test": "node"
+    "test": "test"
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/Keenpoint/json-references.git"
+    "url": "git+ssh://git@github.com/Keenpoint/smart-circular.git"
   },
   "bugs": {
-    "url": "https://github.com/Keenpoint/json-references/issues"
+    "url": "https://github.com/Keenpoint/smart-circular/issues"
   },
   "devDependencies": {
     "chai": "^3.2.0",
