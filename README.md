@@ -45,7 +45,7 @@ This is obtained using *breadth-first search* to do replacements with the shorte
 # Installation
 
 ```
-npm i json-references
+npm i smart-circular
 ```
 
 # Usage 
@@ -53,14 +53,14 @@ npm i json-references
 - Require the module
 
 ```javascript
-var jr = require('json-references');
+var sc = require('smart-circular');
 ```
 
-- Pass the JSON to be simplified as the first argument of the jr function.
+- Pass the JSON to be simplified as the first argument of the sc function.
 - Optionally, pass a second argument with your personalized function to transform parts of the JSON (cf. examples).
 
 ```javascript
-var result = jr(value, [customizer]);
+var result = sc(value, [customizer]);
 ```
 
 
@@ -77,7 +77,7 @@ var json = {
 
 json.a.b = json.a;
 
-var result = jr(json);
+var result = sc(json);
 
 console.log(JSON.stringify(result, null, 2));
 ```
@@ -109,7 +109,7 @@ var json = {
 
 json.d = json.a.b;
 
-var result = jr(json);
+var result = sc(json);
 
 console.log(JSON.stringify(result, null, 2));
 ```
@@ -132,7 +132,7 @@ Realize the reference is put at *b*, even though *d* has changed. If we had cons
 - The following script will not only replace circular and repeated references, but also replace by *false* all boolean values that are *true*.
 
 ```javascript
- var result = jr(json, function (value) {
+ var result = sc(json, function (value) {
             if (value === true) {
                 //return replacement
                 return false; 
@@ -143,7 +143,7 @@ Realize the reference is put at *b*, even though *d* has changed. If we had cons
 - If you want to replace an entire JSON object, use the method ['isEqual' from lodash](https://lodash.com/docs#isEqual):
 
 ```javascript
- var result = jr(json, function (value) {
+ var result = sc(json, function (value) {
              //other is the deep JSON object you want to replace
              if (_.isEqual(value, other)) {
                 //returning replacement
