@@ -17,7 +17,7 @@ var school = {
 };
 ```
 
-What if you wanted to remove circular references to the school object, to export it in JSON for example? Actual libraries that remove circular references remove them recursively, so you have have a strong chance to obtain the json :
+What if you wanted to remove circular references to the school object, to export it in JSON for example? Actual libraries that remove circular references remove them recursively, so you have have a strong chance to obtain the json:
 
 ```javascript
 {
@@ -28,7 +28,7 @@ What if you wanted to remove circular references to the school object, to export
 }
 ```
 
-The library smart-circular not only keeps the nearest reference to the root, but the other are transformed to a string pointing to it :
+The library smart-circular not only keeps the nearest reference to the root, but the other are transformed to a string pointing to it:
 
 ```javascript
 {
@@ -167,9 +167,9 @@ Realize the reference is put at *b*, even though *d* has changed. If we had cons
 
 The replacements made by the algorithm (not personalized) are strings in the form '$[path]'.
 
-The paths written in the result are easy to read: 'JSON' is your original variable 'value'. 
+The paths written in the result are easy to read: the '$' represents your object root. 
 
-So the path below points to 'your variable' (which is an array) → 'second position of the array' (arrays begin at 0) → 'key friends' → 'third friend' → 'his name'.
+So the path below points to 'your variable' (which is an array) → 'second position of the array' (arrays begin at 0) → 'key friends' → 'third friend' → 'his name'. To get this name, you can simply replace the '$' by your object name.
 
 ```javascript
   $[1].friends[2].name
