@@ -17,7 +17,7 @@ var school = {
 };
 ```
 
-What if you wanted to remove circular references to the school object, to export it in JSON for example? Actual libraries that remove circular references remove them recursively, so you have have a strong chance to obtain the json:
+What if you wanted to remove circular references to the school object, to export it in JSON for example? Current libraries that remove circular references remove them recursively, so you have have a strong chance to obtain the json:
 
 ```javascript
 {
