@@ -177,7 +177,6 @@ var Alerts = {
 };
 
 var result = circularBFS(Alerts, function(value) {
-
        //If it's a function, we only write "f(arg1, arg2, ...) { number of lines }"
        if(typeof value === "function") {
               var functionRegex = /\([^{]*/;
