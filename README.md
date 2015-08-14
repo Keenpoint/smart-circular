@@ -97,14 +97,14 @@ This script gives:
 
 ```javascript
 var json = {
-            a: {
-                     b: {
-                            c: 55
-                     }
-            },
-            d: {
-                     e: 4
-            }
+       a: {
+              b: {
+                     c: 55
+              }
+       },
+       d: {
+              e: 4
+       }
 };
 
 json.d = json.a.b;
@@ -118,12 +118,12 @@ This script gives:
 
 ```javascript
 {
-         "a": {
+       "a": {
               "b": "$.d"
-         },
-         "d": {
+       },
+       "d": {
               "c": 55
-         }
+       }
 }
 ```
 
@@ -132,36 +132,72 @@ Realize the reference is put at *b*, even though *d* has changed. If we had cons
 - The following script will not only replace circular and repeated references, but also replace by *false* all boolean values that are *true*.
 
 ```javascript
- var result = sc(json, function (value) {
-            if (value === true) {
-                //return replacement
-                return false; 
-            }
-        });
+var result = sc(json, function (value) {
+       if (value === true) {
+              //return replacement
+              return false; 
+       }
+});
 ```
 
 - If you want to replace an entire JSON object, use the method ['isEqual' from lodash](https://lodash.com/docs#isEqual):
 
 ```javascript
- var result = sc(json, function (value) {
-             //other is the deep JSON object you want to replace
-             if (_.isEqual(value, other)) {
-                //returning replacement
-                return [
-                    {
+var result = sc(json, function (value) {
+       //other is the deep JSON object you want to replace
+       if (_.isEqual(value, other)) {
+              //returning replacement
+              return [
+                     {
                         "id": 0,
                         "name": "Danilo Augusto"
-                    },
-                    {
+                     },
+                     {
                         "id": 1,
                         "name": "Sherlock Holmes"
-                    }
-                ];
-            }
-        });
+                     }
+              ];
+       }
+});
         
 ```
 
+Remember that, before putting your replacement in the new object, we'll look for repetitions and circularities envolving it: in that case the replacement is a string pointing to the path of the first occurrence. All the descendants of your replacement will also be checked.
+
+- If you want to replace functions:
+
+```javascript
+var Alerts = {
+       houston: function() {
+              alert("Houston, we have a problem.");
+       },
+       email: function(name) {
+              alert("You didn't enter any email address, " + name + ". We're not psychic...");
+       }
+};
+
+var result = circularBFS(Alerts, function(value) {
+
+       //If it's a function, we only write "f(arg1, arg2, ...) { number of lines }"
+       if(typeof value === "function") {
+              var functionRegex = /\([^{]*/;
+              var fs = value.toString();
+              var lineNum = fs.split(/\r\n|\r|\n/).length;
+              return ("f " + functionRegex.exec(value.toString())[0] + "{ " + lineNum + " }");
+       }
+});
+
+console.log(JSON.stringify(result, null, 2));
+```
+
+This script gives:
+
+```javascript
+{
+       "email": "f (name) { 3 }",
+       "houston": "f () { 3 }"
+}
+```
 
 # Understanding the paths
 
