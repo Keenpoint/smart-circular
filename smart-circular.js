@@ -124,14 +124,6 @@ var breakCyclesInBFS = function(object, customizer) {
                 }
             }
         }
-        ////If it's a function, we only write "f(arg1, arg2, ...) { number of lines }"
-        //else if(typeof value === "function") {//todo: why not remove it and let the user put it in customizer?
-        //    //To write the functions in our way
-        //    var functionRegex = /\([^{]*/;
-        //    var fs = value.toString();
-        //    var lineNum = fs.split(/\r\n|\r|\n/).length;
-        //    editor.editObject("f " + functionRegex.exec(value.toString())[0] + "{ " + lineNum + " }");
-        //}
         //If it's an elementary value, it can't be circular, so we just put this value in our JSON result.
         else {
             nextInsertion = value;

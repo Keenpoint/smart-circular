@@ -165,7 +165,7 @@ describe("Verify correct order of references from BFS algorithm.", function() {
 
 describe("Readme example", function() {
 
-    it("works", function(done) {
+    it("Family", function(done) {
         var danilo = {name: "Danilo"};
 
         var school = {
@@ -191,3 +191,43 @@ describe("Readme example", function() {
     });
 
 });
+
+describe("Readme second example", function() {
+
+    it("Function inside object", function(done) {
+
+        var Alerts = {
+            houston: function() {
+                alert("Houston, we have a problem.");
+            },
+            email: function(name) {
+                alert("You didn't enter any email address, " + name + ". We're smart, but not psychic...");
+            }
+        };
+
+        var result = circularBFS(Alerts, function(value) {
+
+            //If it's a function, we only write "f(arg1, arg2, ...) { number of lines }"
+            if(typeof value === "function") {
+                //To write the functions in our way
+                var functionRegex = /\([^{]*/;
+                var fs = value.toString();
+                var lineNum = fs.split(/\r\n|\r|\n/).length;
+                return ("f " + functionRegex.exec(value.toString())[0] + "{ " + lineNum + " }");
+            }
+        });
+
+        var answer = {
+            "email": "f (name) { 3 }",
+            "houston": "f () { 3 }"
+        };
+
+        console.log(JSON.stringify(result, null, 2));
+
+        expect(result).to.deep.equal(answer);
+
+        done();
+    });
+
+});
+
