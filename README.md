@@ -194,8 +194,8 @@ This script gives:
 
 ```javascript
 {
-       "email": "f (name) { 3 }",
-       "houston": "f () { 3 }"
+       "houston": "f () { 3 }",
+       "email": "f (name) { 3 }"
 }
 ```
 
