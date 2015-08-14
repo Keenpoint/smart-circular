@@ -57,7 +57,7 @@ var sc = require('smart-circular');
 ```
 
 - Pass the JSON to be simplified as the first argument of the sc function.
-- Optionally, pass a second argument with your personalized function to transform parts of the JSON (cf. examples).
+- Optionally, pass a second argument with your personalised function to transform parts of the JSON (cf. examples).
 
 ```javascript
 var result = sc(value, [customizer]);
@@ -200,7 +200,7 @@ This script gives:
 
 # Understanding the paths
 
-The replacements made by the algorithm (not personalized) are strings in the form '$[path]'.
+The replacements made by the algorithm (not personalised) are strings in the form '$[path]'.
 
 The paths written in the result are easy to read: the '$' represents your object root. 
 
