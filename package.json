@@ -32,11 +32,10 @@
     "url": "https://github.com/Keenpoint/smart-circular/issues"
   },
   "devDependencies": {
-    "chai": "^3.2.0",
-    "lodash": "^3.10.0",
-    "mocha": "^2.2.5"
+    "chai": "^3.5.0",
+    "mocha": "^3.0.2"
   },
   "dependencies": {
-    "lodash": "^3.10.1"
+    "lodash": "^4.15.0"
   }
 }

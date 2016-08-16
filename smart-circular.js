@@ -101,7 +101,7 @@ var breakCyclesInBFS = function(object, customizer) {
         if(typeof value === "object") {
 
             positionStack = _.chain(foundStack)
-                .pluck("value")
+                .map("value")
                 .indexOf(value)
                 .value();
 
